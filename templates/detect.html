@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DeepGuard | Detection</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="nav-container">
+
+        <a href="/" class="logo">
+            🛡️ DeepGuard
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+
+            <a href="/detect" class="active">
+                Detect
+            </a>
+
+            <a href="/history">
+                History
+            </a>
+
+            <a href="/#how-it-works">
+                How It Works
+            </a>
+
+            <a href="/#about">
+                About
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<main class="detection-page">
+
+    <div class="detection-container">
+
+        <div class="detection-header">
+
+            <span class="section-badge">
+                AI MEDIA ANALYSIS
+            </span>
+
+            <h1>
+                Detect AI-Generated Media
+            </h1>
+
+            <p>
+                Upload an image or video and let DeepGuard
+                analyze it using an AI-powered detection model.
+            </p>
+
+        </div>
+
+
+        <div class="upload-card">
+
+            <div id="uploadArea"
+                 class="upload-area">
+
+                <div class="upload-icon">
+                    ⬆
+                </div>
+
+                <h2>
+                    Upload your media
+                </h2>
+
+                <p>
+                    Drag and drop your file here
+                    or choose a file from your computer.
+                </p>
+
+                <p class="upload-formats">
+                    JPG, PNG, WEBP, MP4, AVI, MOV, MKV
+                </p>
+
+                <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/*,video/*"
+                    hidden
+                >
+
+                <button
+                    type="button"
+                    id="chooseButton"
+                    class="primary-button">
+
+                    Choose File
+
+                </button>
+
+            </div>
+
+
+            <div id="previewContainer"
+                 class="preview-container"
+                 style="display:none;">
+
+                <div class="preview-header">
+
+                    <h3>
+                        Selected Media
+                    </h3>
+
+                    <button
+                        type="button"
+                        id="removeButton"
+                        class="remove-button">
+
+                        Remove
+
+                    </button>
+
+                </div>
+
+
+                <div id="preview"></div>
+
+
+                <div class="file-details">
+
+                    <span id="fileName">
+                        -
+                    </span>
+
+                    <span id="fileSize">
+                        -
+                    </span>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="analyzeButton"
+                    class="analyze-button">
+
+                    Analyze with DeepGuard →
+
+                </button>
+
+                <div
+                    id="statusMessage"
+                    class="status-message">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="detection-note">
+
+            <strong>Important:</strong>
+
+            DeepGuard provides probabilistic AI-media
+            analysis. Results should be interpreted as
+            an indication rather than absolute proof
+            of authenticity.
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+const fileInput =
+    document.getElementById("fileInput");
+
+const chooseButton =
+    document.getElementById("chooseButton");
+
+const uploadArea =
+    document.getElementById("uploadArea");
+
+const previewContainer =
+    document.getElementById("previewContainer");
+
+const preview =
+    document.getElementById("preview");
+
+const fileName =
+    document.getElementById("fileName");
+
+const fileSize =
+    document.getElementById("fileSize");
+
+const removeButton =
+    document.getElementById("removeButton");
+
+const analyzeButton =
+    document.getElementById("analyzeButton");
+
+const statusMessage =
+    document.getElementById("statusMessage");
+
+let selectedFile = null;
+
+
+chooseButton.addEventListener(
+    "click",
+    () => fileInput.click()
+);
+
+
+uploadArea.addEventListener(
+    "dragover",
+    (event) => {
+
+        event.preventDefault();
+
+        uploadArea.classList.add("dragging");
+
+    }
+);
+
+
+uploadArea.addEventListener(
+    "dragleave",
+    () => {
+
+        uploadArea.classList.remove(
+            "dragging"
+        );
+
+    }
+);
+
+
+uploadArea.addEventListener(
+    "drop",
+    (event) => {
+
+        event.preventDefault();
+
+        uploadArea.classList.remove(
+            "dragging"
+        );
+
+        const files =
+            event.dataTransfer.files;
+
+        if (files.length > 0) {
+
+            handleFile(files[0]);
+
+        }
+
+    }
+);
+
+
+fileInput.addEventListener(
+    "change",
+    () => {
+
+        if (fileInput.files.length > 0) {
+
+            handleFile(
+                fileInput.files[0]
+            );
+
+        }
+
+    }
+);
+
+
+function handleFile(file) {
+
+    selectedFile = file;
+
+    const validTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "video/mp4",
+        "video/quicktime",
+        "video/x-msvideo",
+        "video/x-matroska"
+    ];
+
+    if (!validTypes.includes(file.type)) {
+
+        alert(
+            "Please select a supported image or video file."
+        );
+
+        return;
+
+    }
+
+
+    fileName.textContent =
+        file.name;
+
+    fileSize.textContent =
+        formatFileSize(file.size);
+
+
+    preview.innerHTML = "";
+
+
+    const objectURL =
+        URL.createObjectURL(file);
+
+
+    if (file.type.startsWith("image/")) {
+
+        const image =
+            document.createElement("img");
+
+        image.src = objectURL;
+
+        image.className =
+            "media-preview";
+
+        preview.appendChild(image);
+
+    }
+
+    else if (file.type.startsWith("video/")) {
+
+        const video =
+            document.createElement("video");
+
+        video.src = objectURL;
+
+        video.controls = true;
+
+        video.className =
+            "media-preview";
+
+        preview.appendChild(video);
+
+    }
+
+
+    uploadArea.style.display =
+        "none";
+
+    previewContainer.style.display =
+        "block";
+
+    statusMessage.textContent = "";
+
+}
+
+
+removeButton.addEventListener(
+    "click",
+    () => {
+
+        selectedFile = null;
+
+        fileInput.value = "";
+
+        preview.innerHTML = "";
+
+        uploadArea.style.display =
+            "block";
+
+        previewContainer.style.display =
+            "none";
+
+        statusMessage.textContent = "";
+
+    }
+);
+
+
+analyzeButton.addEventListener(
+    "click",
+    async () => {
+
+        if (!selectedFile) {
+
+            return;
+
+        }
+
+
+        analyzeButton.disabled = true;
+
+        analyzeButton.textContent =
+            "Analyzing... Please wait";
+
+        statusMessage.textContent =
+            "DeepGuard is analyzing your media. This may take a moment...";
+
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "file",
+            selectedFile
+        );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/upload",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (data.success) {
+
+                statusMessage.textContent =
+                    "Analysis complete. Opening results...";
+
+                window.location.href =
+                    data.result_url;
+
+            }
+
+            else {
+
+                throw new Error(
+                    data.error ||
+                    "Analysis failed."
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            statusMessage.textContent =
+                error.message;
+
+            analyzeButton.disabled =
+                false;
+
+            analyzeButton.textContent =
+                "Analyze with DeepGuard →";
+
+        }
+
+    }
+);
+
+
+function formatFileSize(bytes) {
+
+    if (bytes < 1024) {
+
+        return bytes + " B";
+
+    }
+
+    if (bytes < 1024 * 1024) {
+
+        return (
+            (bytes / 1024).toFixed(1)
+            + " KB"
+        );
+
+    }
+
+    return (
+        (bytes / (1024 * 1024)).toFixed(1)
+        + " MB"
+    );
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Flask uploads
+static/uploads/*
+static/frames/*
+
+# Local database
+deepguard.db
+
+# Test dataset
+test_dataset/
+
+# Environment files
+.env
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>DeepGuard | AI Deepfake Detection</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         NAVIGATION
+    =========================================== -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <span class="logo-icon">🛡️</span>
+            <span>Deep<span class="logo-highlight">Guard</span></span>
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="/" class="active">
+                Home
+            </a>
+
+            <a href="/detect">
+                Detect
+            </a>
+            
+            <a href="/history">History</a>
+
+            <a href="#how-it-works">
+                How It Works
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+        </div>
+
+
+        <a href="/detect"
+           class="nav-button">
+
+            Start Detection
+
+        </a>
+
+    </nav>
+
+
+
+    <!-- ==========================================
+         HERO SECTION
+    =========================================== -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+
+                <span class="pulse-dot"></span>
+
+                AI-POWERED DEEPFAKE DETECTION
+
+            </div>
+
+
+            <h1>
+
+                Detect Deepfakes.
+                <br>
+
+                <span>Protect Reality.</span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                DeepGuard uses artificial intelligence and
+                computer vision to analyze digital media
+                and identify potential AI-generated
+                or manipulated content.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a href="/detect"
+                   class="primary-button">
+
+                    Start Detection
+                    <span>→</span>
+
+                </a>
+
+
+                <a href="#how-it-works"
+                   class="secondary-button">
+
+                    Learn How It Works
+
+                </a>
+
+            </div>
+
+
+            <div class="hero-trust">
+
+                <span>✓</span>
+                AI-powered analysis
+
+                <span>✓</span>
+                Image & video support
+
+                <span>✓</span>
+                Fast results
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ======================================
+             HERO VISUAL
+        ======================================= -->
+
+        <div class="hero-visual">
+
+            <div class="visual-glow"></div>
+
+
+            <div class="scan-card">
+
+                <div class="scan-header">
+
+                    <span>
+                        LIVE ANALYSIS
+                    </span>
+
+                    <span class="online">
+                        ● SYSTEM READY
+                    </span>
+
+                </div>
+
+
+                <div class="face-visual">
+
+                    <div class="face-placeholder">
+
+                        <div class="face-circle">
+
+                            👤
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="scan-line"></div>
+
+                </div>
+
+
+                <div class="analysis-info">
+
+                    <div>
+
+                        <small>
+                            MEDIA STATUS
+                        </small>
+
+                        <strong>
+                            Ready to Analyze
+                        </strong>
+
+                    </div>
+
+
+                    <div class="analysis-icon">
+                        🔍
+                    </div>
+
+                </div>
+
+
+                <div class="analysis-bars">
+
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="floating-card card-top">
+
+                <span class="floating-icon">
+                    🧠
+                </span>
+
+                <div>
+
+                    <strong>
+                        AI Analysis
+                    </strong>
+
+                    <small>
+                        Advanced detection
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="floating-card card-bottom">
+
+                <span class="floating-icon">
+                    🛡️
+                </span>
+
+                <div>
+
+                    <strong>
+                        DeepGuard
+                    </strong>
+
+                    <small>
+                        Protecting digital truth
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         STATS
+    =========================================== -->
+
+    <section class="stats">
+
+        <div class="stat-item">
+
+            <strong>
+                AI
+            </strong>
+
+            <span>
+                Powered Detection
+            </span>
+
+        </div>
+
+
+        <div class="stat-divider"></div>
+
+
+        <div class="stat-item">
+
+            <strong>
+                2
+            </strong>
+
+            <span>
+                Media Types
+            </span>
+
+        </div>
+
+
+        <div class="stat-divider"></div>
+
+
+        <div class="stat-item">
+
+            <strong>
+                24/7
+            </strong>
+
+            <span>
+                Digital Protection
+            </span>
+
+        </div>
+
+
+        <div class="stat-divider"></div>
+
+
+        <div class="stat-item">
+
+            <strong>
+                ⚡
+            </strong>
+
+            <span>
+                Fast Analysis
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         HOW IT WORKS
+    =========================================== -->
+
+    <section class="how-section"
+             id="how-it-works">
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                HOW IT WORKS
+            </div>
+
+            <h2>
+                From Media to
+                <span>Insight.</span>
+            </h2>
+
+            <p>
+                DeepGuard follows a simple AI-powered
+                process to analyze your digital media.
+            </p>
+
+        </div>
+
+
+        <div class="process-container">
+
+
+            <div class="process-card">
+
+                <div class="process-number">
+                    01
+                </div>
+
+                <div class="process-icon">
+                    📤
+                </div>
+
+                <h3>
+                    Upload
+                </h3>
+
+                <p>
+                    Select an image or video that you
+                    want DeepGuard to analyze.
+                </p>
+
+            </div>
+
+
+            <div class="process-arrow">
+                →
+            </div>
+
+
+            <div class="process-card">
+
+                <div class="process-number">
+                    02
+                </div>
+
+                <div class="process-icon">
+                    🧠
+                </div>
+
+                <h3>
+                    AI Analysis
+                </h3>
+
+                <p>
+                    Our AI model examines visual patterns
+                    and indicators of manipulation.
+                </p>
+
+            </div>
+
+
+            <div class="process-arrow">
+                →
+            </div>
+
+
+            <div class="process-card">
+
+                <div class="process-number">
+                    03
+                </div>
+
+                <div class="process-icon">
+                    📊
+                </div>
+
+                <h3>
+                    Get Results
+                </h3>
+
+                <p>
+                    Receive a classification and confidence
+                    score from the detection system.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         FEATURES
+    =========================================== -->
+
+    <section class="features-section">
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                WHY DEEPGUARD
+            </div>
+
+            <h2>
+                Built for a
+                <span>Safer Digital World.</span>
+            </h2>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+
+            <div class="feature-box">
+
+                <div class="feature-icon">
+                    🧠
+                </div>
+
+                <h3>
+                    AI-Powered
+                </h3>
+
+                <p>
+                    Uses a trained image classification
+                    model to analyze digital media.
+                </p>
+
+            </div>
+
+
+            <div class="feature-box">
+
+                <div class="feature-icon">
+                    🔍
+                </div>
+
+                <h3>
+                    Deep Analysis
+                </h3>
+
+                <p>
+                    Examines visual characteristics that
+                    may indicate synthetic manipulation.
+                </p>
+
+            </div>
+
+
+            <div class="feature-box">
+
+                <div class="feature-icon">
+                    ⚡
+                </div>
+
+                <h3>
+                    Fast Results
+                </h3>
+
+                <p>
+                    Analyze supported media and receive
+                    results within seconds.
+                </p>
+
+            </div>
+
+
+            <div class="feature-box">
+
+                <div class="feature-icon">
+                    🛡️
+                </div>
+
+                <h3>
+                    Digital Safety
+                </h3>
+
+                <p>
+                    Designed to help users make more
+                    informed decisions about digital media.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         ABOUT
+    =========================================== -->
+
+    <section class="about-section"
+             id="about">
+
+        <div class="about-content">
+
+            <div class="section-label">
+                ABOUT DEEPGUARD
+            </div>
+
+            <h2>
+                Understanding
+                <span>Digital Reality.</span>
+            </h2>
+
+            <p>
+
+                DeepGuard is an academic deepfake detection
+                system developed to explore how artificial
+                intelligence and computer vision can be used
+                to identify manipulated digital media.
+
+            </p>
+
+            <p>
+
+                The system combines a web interface,
+                image preprocessing and an AI-based
+                classification model to provide an
+                interpretable detection result.
+
+            </p>
+
+
+            <a href="/detect"
+               class="primary-button">
+
+                Try DeepGuard
+                <span>→</span>
+
+            </a>
+
+        </div>
+
+
+        <div class="about-visual">
+
+            <div class="shield-large">
+                🛡️
+            </div>
+
+            <div class="orbit orbit-one"></div>
+
+            <div class="orbit orbit-two"></div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         FINAL CTA
+    =========================================== -->
+
+    <section class="cta-section">
+
+        <div class="cta-content">
+
+            <div class="section-label">
+                READY TO CHECK YOUR MEDIA?
+            </div>
+
+            <h2>
+                Don't Guess.
+                <span>Detect.</span>
+            </h2>
+
+            <p>
+                Upload your media and let DeepGuard
+                perform an AI-powered analysis.
+            </p>
+
+            <a href="/detect"
+               class="primary-button large">
+
+                Start Detection
+                <span>→</span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         FOOTER
+    =========================================== -->
+
+    <footer class="main-footer">
+
+        <div class="footer-brand">
+
+            <div class="logo">
+
+                <span class="logo-icon">
+                    🛡️
+                </span>
+
+                Deep<span class="logo-highlight">
+                    Guard
+                </span>
+
+            </div>
+
+            <p>
+                AI-powered deepfake detection.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/detect">
+                Detect
+            </a>
+
+            <a href="#how-it-works">
+                How It Works
+            </a>
+
+            <a href="#about">
+                About
+            </a>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 DeepGuard · Deepfake Detection System
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

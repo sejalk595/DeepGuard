@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        DeepGuard | History
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .history-wrapper {
+            max-width: 1200px;
+            margin: auto;
+            padding: 60px 24px;
+        }
+
+        .history-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .history-header h1 {
+            margin: 12px 0;
+        }
+
+        .history-header p {
+            opacity: 0.7;
+        }
+
+        .history-actions {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 35px;
+        }
+
+        .history-button {
+            text-decoration: none;
+            padding: 13px 22px;
+            border-radius: 12px;
+            background: linear-gradient(
+                135deg,
+                #a855f7,
+                #ec4899
+            );
+            color: white;
+            font-weight: 600;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            padding: 25px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .summary-title {
+            font-size: 13px;
+            opacity: 0.6;
+            margin-bottom: 10px;
+        }
+
+        .summary-number {
+            font-size: 35px;
+            font-weight: 800;
+        }
+
+        .fake-number {
+            color: #ff6b81;
+        }
+
+        .real-number {
+            color: #7ee787;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 950px;
+        }
+
+        th {
+            text-align: left;
+            padding: 18px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            border-bottom:
+                1px solid rgba(255,255,255,0.1);
+        }
+
+        td {
+            padding: 18px;
+            border-bottom:
+                1px solid rgba(255,255,255,0.06);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .filename {
+            font-weight: 600;
+            max-width: 220px;
+            word-break: break-word;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .fake-badge {
+            background: rgba(255,107,129,0.12);
+            color: #ff6b81;
+        }
+
+        .real-badge {
+            background: rgba(126,231,135,0.12);
+            color: #7ee787;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 70px 20px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 700px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="nav-container">
+
+        <a href="/" class="logo">
+            🛡️ DeepGuard
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/detect">
+                Detect
+            </a>
+
+            <a href="/history" class="active">
+                History
+            </a>
+
+            <a href="/#how-it-works">
+                How It Works
+            </a>
+
+            <a href="/#about">
+                About
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<main class="history-wrapper">
+
+
+    <div class="history-header">
+
+        <span class="section-badge">
+            ANALYSIS HISTORY
+        </span>
+
+        <h1>
+            DeepGuard History
+        </h1>
+
+        <p>
+            View your previous media analysis results.
+        </p>
+
+    </div>
+
+
+
+    <div class="history-actions">
+
+        <a
+            href="/detect"
+            class="history-button">
+
+            + New Analysis
+
+        </a>
+
+    </div>
+
+
+
+    <div class="summary-grid">
+
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                TOTAL ANALYSES
+            </div>
+
+            <div class="summary-number">
+
+                {{ total }}
+
+            </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                AI / FAKE DETECTED
+            </div>
+
+            <div class="summary-number fake-number">
+
+                {{ fake_count }}
+
+            </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                REAL DETECTED
+            </div>
+
+            <div class="summary-number real-number">
+
+                {{ real_count }}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    {% if records %}
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        FILE
+                    </th>
+
+                    <th>
+                        TYPE
+                    </th>
+
+                    <th>
+                        RESULT
+                    </th>
+
+                    <th>
+                        CONFIDENCE
+                    </th>
+
+                    <th>
+                        REAL %
+                    </th>
+
+                    <th>
+                        AI %
+                    </th>
+
+                    <th>
+                        FRAMES
+                    </th>
+
+                    <th>
+                        DATE
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+                {% for record in records %}
+
+
+                <tr>
+
+
+                    <td class="filename">
+
+                        {{ record.filename }}
+
+                    </td>
+
+
+                    <td>
+
+                        {{ record.file_type }}
+
+                    </td>
+
+
+                    <td>
+
+                        {% if record.result == "FAKE" %}
+
+                            <span
+                                class="badge fake-badge">
+
+                                AI-GENERATED
+
+                            </span>
+
+                        {% else %}
+
+                            <span
+                                class="badge real-badge">
+
+                                REAL
+
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        {{ record.confidence }}%
+
+                    </td>
+
+
+                    <td>
+
+                        {{ record.real_probability }}%
+
+                    </td>
+
+
+                    <td>
+
+                        {{ record.fake_probability }}%
+
+                    </td>
+
+
+                    <td>
+
+                        {% if record.file_type == "Video" %}
+
+                            {{ record.frames_analyzed }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        {{ record.created_at }}
+
+                    </td>
+
+
+                </tr>
+
+
+                {% endfor %}
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+
+    <div class="empty-state">
+
+        <div class="empty-icon">
+            🔍
+        </div>
+
+        <h2>
+            No analyses yet
+        </h2>
+
+        <p>
+            Upload an image or video to start
+            your first DeepGuard analysis.
+        </p>
+
+        <br>
+
+        <a
+            href="/detect"
+            class="history-button">
+
+            Start Detection →
+
+        </a>
+
+    </div>
+
+
+    {% endif %}
+
+
+</main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>DeepGuard | Detection Result</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #24134f 0%,
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    #321047 0%,
+                    transparent 35%
+                ),
+                #090812;
+
+            color: white;
+
+            min-height: 100vh;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+
+            height: 72px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            background:
+                rgba(8,8,18,0.8);
+
+            backdrop-filter: blur(15px);
+        }
+
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: 800;
+        }
+
+
+        .logo span {
+
+            color: #d45cff;
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            gap: 28px;
+        }
+
+
+        .nav-links a {
+
+            color: #bdb9c9;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+
+        .nav-links a:hover {
+
+            color: white;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        main {
+
+            width: 90%;
+
+            max-width: 1100px;
+
+            margin:
+                45px auto 70px;
+        }
+
+
+        .page-title {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        .page-title h1 {
+
+            font-size: 38px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .page-title p {
+
+            color: #aaa5b5;
+
+            font-size: 15px;
+        }
+
+
+        /* ================= CARD ================= */
+
+        .result-card {
+
+            border:
+                1px solid
+                rgba(255,255,255,0.1);
+
+            background:
+                rgba(255,255,255,0.045);
+
+            border-radius: 25px;
+
+            padding: 30px;
+
+            backdrop-filter: blur(15px);
+
+            box-shadow:
+                0 25px 70px
+                rgba(0,0,0,0.35);
+        }
+
+
+        /* ================= MEDIA ================= */
+
+        .media-box {
+
+            width: 100%;
+
+            max-height: 430px;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            background: #05050a;
+
+            margin-bottom: 30px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+        }
+
+
+        .media-box img,
+        .media-box video {
+
+            width: 100%;
+
+            max-height: 430px;
+
+            object-fit: contain;
+
+            display: block;
+        }
+
+
+        /* ================= STATUS ================= */
+
+        .status-section {
+
+            text-align: center;
+
+            padding:
+                20px 10px 35px;
+        }
+
+
+        .status-label {
+
+            font-size: 13px;
+
+            color: #aaa5b5;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 12px;
+        }
+
+
+        .status {
+
+            font-size: 55px;
+
+            font-weight: 900;
+
+            margin-bottom: 10px;
+        }
+
+
+        .status.fake {
+
+            color: #ff5c73;
+
+            text-shadow:
+                0 0 30px
+                rgba(255,92,115,0.35);
+        }
+
+
+        .status.real {
+
+            color: #65e69a;
+
+            text-shadow:
+                0 0 30px
+                rgba(101,230,154,0.35);
+        }
+
+
+        .confidence-text {
+
+            color: #d8d4df;
+
+            font-size: 16px;
+        }
+
+
+        .confidence-text strong {
+
+            color: white;
+        }
+
+
+        /* ================= TITLES ================= */
+
+        .section-title {
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* ================= CONFIDENCE ================= */
+
+        .confidence-container {
+
+            margin-bottom: 35px;
+        }
+
+
+        .confidence-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 10px;
+
+            color: #bdb9c9;
+
+            font-size: 14px;
+        }
+
+
+        .confidence-value {
+
+            color: white;
+
+            font-weight: bold;
+        }
+
+
+        .confidence-bar {
+
+            height: 13px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.08);
+
+            overflow: hidden;
+        }
+
+
+        .confidence-fill {
+
+            height: 100%;
+
+            width: {{ confidence|float }}%;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #925cff,
+                    #e15cff
+                );
+
+            box-shadow:
+                0 0 18px
+                rgba(214,92,255,0.45);
+        }
+
+
+        /* ================= PROBABILITY ================= */
+
+        .probability-section {
+
+            margin-bottom: 35px;
+        }
+
+
+        .probability-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 20px;
+        }
+
+
+        .probability-card {
+
+            padding: 22px;
+
+            border-radius: 18px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.1);
+
+            background:
+                rgba(255,255,255,0.035);
+        }
+
+
+        .probability-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 14px;
+        }
+
+
+        .probability-name {
+
+            color: #bdb9c9;
+
+            font-size: 14px;
+        }
+
+
+        .probability-number {
+
+            font-size: 22px;
+
+            font-weight: 800;
+        }
+
+
+        .real-number {
+
+            color: #65e69a;
+        }
+
+
+        .fake-number {
+
+            color: #ff657b;
+        }
+
+
+        .probability-bar {
+
+            height: 10px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.08);
+
+            overflow: hidden;
+        }
+
+
+        .real-fill {
+
+            height: 100%;
+
+            width:
+                {{ real_probability|float }}%;
+
+            background: #65e69a;
+
+            border-radius: 20px;
+        }
+
+
+        .fake-fill {
+
+            height: 100%;
+
+            width:
+                {{ fake_probability|float }}%;
+
+            background: #ff657b;
+
+            border-radius: 20px;
+        }
+
+
+        /* ================= VIDEO ANALYSIS ================= */
+
+        .video-analysis {
+
+            margin-bottom: 35px;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            border:
+                1px solid
+                rgba(170,100,255,0.25);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(130,70,255,0.09),
+                    rgba(220,70,255,0.05)
+                );
+        }
+
+
+        .video-analysis-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 22px;
+        }
+
+
+        .video-analysis-header h3 {
+
+            font-size: 18px;
+        }
+
+
+        .video-badge {
+
+            padding:
+                7px 12px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            background:
+                rgba(190,90,255,0.15);
+
+            color: #df9cff;
+
+            border:
+                1px solid
+                rgba(190,90,255,0.3);
+        }
+
+
+        .frame-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+
+        .frame-stat {
+
+            padding: 20px;
+
+            text-align: center;
+
+            border-radius: 15px;
+
+            background:
+                rgba(255,255,255,0.04);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+        }
+
+
+        .frame-number {
+
+            display: block;
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            margin-bottom: 7px;
+        }
+
+
+        .frame-label {
+
+            color: #9993a5;
+
+            font-size: 12px;
+        }
+
+
+        .fake-frame {
+
+            color: #ff657b;
+        }
+
+
+        .real-frame {
+
+            color: #65e69a;
+        }
+
+
+        .neutral-frame {
+
+            color: #d99cff;
+        }
+
+
+        .frame-summary {
+
+            margin-top: 18px;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            color: #bbb5c4;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* ================= INFO ================= */
+
+        .info-section {
+
+            margin-bottom: 35px;
+        }
+
+
+        .info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 15px;
+        }
+
+
+        .info-card {
+
+            padding: 20px;
+
+            border-radius: 17px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            background:
+                rgba(255,255,255,0.035);
+        }
+
+
+        .info-label {
+
+            color: #888394;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .info-value {
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            word-break: break-word;
+        }
+
+
+        /* ================= EXPLANATION ================= */
+
+        .explanation {
+
+            padding: 22px;
+
+            border-radius: 18px;
+
+            margin-bottom: 20px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.1);
+
+            background:
+                rgba(255,255,255,0.04);
+        }
+
+
+        .explanation.fake {
+
+            border-color:
+                rgba(255,92,115,0.35);
+
+            background:
+                rgba(255,92,115,0.07);
+        }
+
+
+        .explanation.real {
+
+            border-color:
+                rgba(101,230,154,0.35);
+
+            background:
+                rgba(101,230,154,0.06);
+        }
+
+
+        .explanation-title {
+
+            font-weight: 700;
+
+            margin-bottom: 9px;
+
+            font-size: 15px;
+        }
+
+
+        .explanation p {
+
+            color: #c4c0ca;
+
+            line-height: 1.6;
+
+            font-size: 14px;
+        }
+
+
+        /* ================= DISCLAIMER ================= */
+
+        .disclaimer {
+
+            padding: 18px 20px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(255,184,77,0.08);
+
+            border:
+                1px solid
+                rgba(255,184,77,0.2);
+
+            color: #d9d2c5;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            margin-bottom: 30px;
+        }
+
+
+        .disclaimer strong {
+
+            color: #ffc266;
+        }
+
+
+        /* ================= BUTTON ================= */
+
+        .actions {
+
+            text-align: center;
+        }
+
+
+        .btn {
+
+            display: inline-block;
+
+            padding:
+                15px 30px;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #925cff,
+                    #e15cff
+                );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            font-size: 14px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(190,80,255,0.25);
+
+            transition: 0.3s;
+        }
+
+
+        .btn:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 15px 35px
+                rgba(190,80,255,0.4);
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            text-align: center;
+
+            color: #777381;
+
+            font-size: 12px;
+
+            padding: 30px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.07);
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+
+                padding: 0 5%;
+            }
+
+
+            .nav-links {
+
+                gap: 12px;
+            }
+
+
+            .nav-links a {
+
+                font-size: 12px;
+            }
+
+
+            main {
+
+                width: 94%;
+
+                margin-top: 30px;
+            }
+
+
+            .result-card {
+
+                padding: 18px;
+
+                border-radius: 18px;
+            }
+
+
+            .page-title h1 {
+
+                font-size: 30px;
+            }
+
+
+            .status {
+
+                font-size: 42px;
+            }
+
+
+            .probability-grid,
+            .info-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .frame-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+            Deep<span>Guard</span>
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/detect">
+                Detect
+            </a>
+
+            <a href="/history">
+                History
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+
+        <div class="page-title">
+
+            <h1>
+                Detection Result
+            </h1>
+
+            <p>
+                DeepGuard AI analysis of your uploaded media
+            </p>
+
+        </div>
+
+
+
+        <div class="result-card">
+
+
+            <!-- ================= MEDIA ================= -->
+
+            <div class="media-box">
+
+                {% set extension =
+                    filename.split('.')[-1].lower()
+                %}
+
+
+                {% if extension in
+                    ['mp4','mov','avi','mkv','webm']
+                %}
+
+                    <video controls>
+
+                        <source
+                            src="{{ url_for(
+                                'static',
+                                filename='uploads/' + filename
+                            ) }}"
+                        >
+
+                        Your browser does not
+                        support video playback.
+
+                    </video>
+
+                {% else %}
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='uploads/' + filename
+                        ) }}"
+                        alt="Analyzed media"
+                    >
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- ================= RESULT ================= -->
+
+            <div class="status-section">
+
+                <div class="status-label">
+                    DeepGuard Detection
+                </div>
+
+
+                {% if result == "FAKE" %}
+
+                    <div class="status fake">
+                        FAKE
+                    </div>
+
+                {% else %}
+
+                    <div class="status real">
+                        REAL
+                    </div>
+
+                {% endif %}
+
+
+                <div class="confidence-text">
+
+                    Detection confidence:
+
+                    <strong>
+                        {{ confidence }}%
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= CONFIDENCE ================= -->
+
+            <div class="confidence-container">
+
+                <div class="confidence-header">
+
+                    <span>
+                        Detection Confidence
+                    </span>
+
+                    <span class="confidence-value">
+                        {{ confidence }}%
+                    </span>
+
+                </div>
+
+
+                <div class="confidence-bar">
+
+                    <div
+                        class="confidence-fill"
+                        style="width:
+                            {{ confidence|float }}%;">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= PROBABILITY ================= -->
+
+            <div class="probability-section">
+
+                <div class="section-title">
+                    AI Probability Analysis
+                </div>
+
+
+                <div class="probability-grid">
+
+
+                    <div class="probability-card">
+
+                        <div class="probability-top">
+
+                            <span class="probability-name">
+                                REAL Probability
+                            </span>
+
+                            <span
+                                class="probability-number
+                                       real-number">
+
+                                {{ real_probability }}%
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="probability-bar">
+
+                            <div
+                                class="real-fill"
+                                style="width:
+                                    {{ real_probability|float }}%;">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="probability-card">
+
+                        <div class="probability-top">
+
+                            <span class="probability-name">
+                                FAKE / AI Probability
+                            </span>
+
+                            <span
+                                class="probability-number
+                                       fake-number">
+
+                                {{ fake_probability }}%
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="probability-bar">
+
+                            <div
+                                class="fake-fill"
+                                style="width:
+                                    {{ fake_probability|float }}%;">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= VIDEO ANALYSIS ================= -->
+
+            {% if analysis_type == "Video Analysis" %}
+
+                <div class="video-analysis">
+
+
+                    <div class="video-analysis-header">
+
+                        <h3>
+                            🎞️ Video Frame Analysis
+                        </h3>
+
+                        <span class="video-badge">
+                            FRAME-BY-FRAME AI ANALYSIS
+                        </span>
+
+                    </div>
+
+
+                    <div class="frame-grid">
+
+
+                        <div class="frame-stat">
+
+                            <span
+                                class="frame-number
+                                       neutral-frame">
+
+                                {{ frames_analyzed }}
+
+                            </span>
+
+                            <span class="frame-label">
+                                Frames Analyzed
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="frame-stat">
+
+                            <span
+                                class="frame-number
+                                       fake-frame">
+
+                                {{ fake_frames }}
+
+                            </span>
+
+                            <span class="frame-label">
+                                AI / Fake Frames
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="frame-stat">
+
+                            <span
+                                class="frame-number
+                                       real-frame">
+
+                                {{ real_frames }}
+
+                            </span>
+
+                            <span class="frame-label">
+                                Real-Looking Frames
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="frame-summary">
+
+                        DeepGuard extracts representative frames
+                        from the uploaded video and analyzes each
+                        frame using the AI detection model.
+                        The final video probability is calculated
+                        from the average frame-level probabilities.
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+
+            <!-- ================= INFORMATION ================= -->
+
+            <div class="info-section">
+
+                <div class="section-title">
+                    Analysis Information
+                </div>
+
+
+                <div class="info-grid">
+
+
+                    <div class="info-card">
+
+                        <div class="info-label">
+                            Analysis Type
+                        </div>
+
+                        <div class="info-value">
+                            {{ analysis_type }}
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="info-card">
+
+                        <div class="info-label">
+                            Frames Analyzed
+                        </div>
+
+                        <div class="info-value">
+
+                            {% if frames_analyzed|int > 0 %}
+
+                                {{ frames_analyzed }}
+
+                            {% else %}
+
+                                Not applicable
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="info-card">
+
+                        <div class="info-label">
+                            AI Model
+                        </div>
+
+                        <div class="info-value">
+                            {{ model }}
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="info-card">
+
+                        <div class="info-label">
+                            File
+                        </div>
+
+                        <div class="info-value">
+                            {{ filename }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= EXPLANATION ================= -->
+
+            <div class="explanation
+                {% if result == 'FAKE' %}
+                    fake
+                {% else %}
+                    real
+                {% endif %}
+            ">
+
+
+                <div class="explanation-title">
+
+                    {% if result == "FAKE" %}
+
+                        ⚠️ AI-Generated Content Detected
+
+                    {% else %}
+
+                        ✓ Real-Looking Content Detected
+
+                    {% endif %}
+
+                </div>
+
+
+                <p>
+
+                    {% if explanation %}
+
+                        {{ explanation }}
+
+                    {% else %}
+
+                        The AI model analyzed the uploaded
+                        media and generated the displayed
+                        probability based on patterns learned
+                        during model training.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+
+            <!-- ================= DISCLAIMER ================= -->
+
+            <div class="disclaimer">
+
+                <strong>
+                    ⚠️ Important:
+                </strong>
+
+                DeepGuard provides a probabilistic
+                AI-based assessment. The result should
+                not be treated as absolute proof of
+                authenticity. Detection performance may
+                vary depending on the media, compression,
+                editing techniques and generation method.
+
+            </div>
+
+
+
+            <!-- ================= BUTTON ================= -->
+
+            <div class="actions">
+
+                <a
+                    href="/detect"
+                    class="btn">
+
+                    Analyze Another File →
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        © 2026 DeepGuard ·
+        AI-Powered Media Detection System
+
+    </footer>
+
+
+</body>
+
+</html>
